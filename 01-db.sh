@@ -44,7 +44,6 @@ VALIDATE $? "Starting mysqld"
 
 # Check root password
 mysql -h db.nsrikanth.online -uroot -pExpenseApp@1 -e "show databases;" &>>$LOG_FILE
-
 if [ $? -ne 0 ]
 then
     mysql_secure_installation --set-root-pass ExpenseApp@1 &>>$LOG_FILE
