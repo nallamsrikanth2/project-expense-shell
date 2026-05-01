@@ -17,7 +17,7 @@ if [ $USERID -ne 0 ]
 then
     echo -e "$R please run the script in inside the root user  $N"
 else
-    echo -e  "$G you are root user $N"
+    echo -e "$G you are root user $N"
 fi
 
 VALIDATE(){
