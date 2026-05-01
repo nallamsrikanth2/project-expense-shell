@@ -13,6 +13,7 @@ N="\e[0m"
 if [ $USERID -ne 0 ]
 then
     echo -e "$R please run the script in inside the root user  $N"
+    exit 1
 else
     echo -e "$G you are root user $N"
 fi
@@ -21,6 +22,7 @@ VALIDATE(){
     if [ $? -ne 0 ]
     then
         echo -e "$R $2 ... FAILURE $N"
+        exit 1
     else
         echo -e "$G $2 ... SUCCESS $N"
     fi
