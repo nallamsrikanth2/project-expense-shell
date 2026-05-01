@@ -34,6 +34,9 @@ VALIDATE $? "install the mysql server"
 systemctl enable mysqld  &>>$LOG_FILE
 VALIDATE $? "enable mysqld"
 
+systemctl start mysqld
+VALIDATE $? "start the mysqld"
+
 mysql -h db.nsrikanth.online -uroot -pExpenseApp@1 -e 'shoe databases;' &>>$LOG_FILE
 if [ $? -ne 0 ]
 then
