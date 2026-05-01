@@ -10,16 +10,18 @@ G="\e[32m"
 Y="\e[33m"
 N="\e[0m"
 
+# Root check
 if [ $USERID -ne 0 ]
 then
-    echo -e "$R please run the script in inside the root user  $N"
+    echo -e "$R Please run the script as root user $N"
     exit 1
 else
-    echo -e "$G you are root user $N"
+    echo -e "$G You are root user $N"
 fi
 
+# Validation function
 VALIDATE(){
-    if [ $? -ne 0 ]
+    if [ $1 -ne 0 ]
     then
         echo -e "$R $2 ... FAILURE $N"
         exit 1
@@ -28,27 +30,27 @@ VALIDATE(){
     fi
 }
 
+# Install MySQL
 dnf install mysql-server -y &>>$LOG_FILE
-VALIDATE $? "install the mysql server"
+VALIDATE $? "Installing MySQL server"
 
-systemctl enable mysqld  &>>$LOG_FILE
-VALIDATE $? "enable mysqld"
+# Enable MySQL
+systemctl enable mysqld &>>$LOG_FILE
+VALIDATE $? "Enabling mysqld"
 
-systemctl start mysqld
-VALIDATE $? "start the mysqld"
+# Start MySQL
+systemctl start mysqld &>>$LOG_FILE
+VALIDATE $? "Starting mysqld"
 
-mysql -h db.nsrikanth.online -uroot -pExpenseApp@1 -e 'show databases;' &>>$LOG_FILE
+# Check root password
+mysql -h db.nsrikanth.online -uroot -pExpenseApp@1 -e "show databases;" &>>$LOG_FILE
+
 if [ $? -ne 0 ]
 then
     mysql_secure_installation --set-root-pass ExpenseApp@1 &>>$LOG_FILE
-    VALIDATE $? "set up root password"
+    VALIDATE $? "Setting root password"
 else
-    echo "root password alredy setup"
+    echo -e "$Y Root password already set $N"
 fi
 
-
-echo -e "$G db server successfully created $N" $>>$LOG_FILE
-
-
-
-
+echo -e "$G DB server setup completed successfully $N" &>>$LOG_FILE
